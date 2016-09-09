@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
-require 'optparse'
-require 'disget'
+require "optparse"
+require "disget"
 require "discogs-wrapper"
+require "tty"
+require "tty-spinner"
 
 discog = Discogs::Wrapper.new("disget")
 
@@ -33,19 +35,17 @@ else
     artist = release[:artists].first[:name]
     release_name = release[:title]
 
-    puts artist
-    puts release_name
+    puts "release: #{artist} - #{release_name}"
 
     release[:tracklist].each do |track|
-      puts "#{artist} - #{track[:title]}"
-
+      getting = TTY::Spinner.new("[:spinner] getting: #{track[:title]}")
+      getting.spin
       youtube_url = disget.search("#{artist} - #{track[:title]}")
-      puts youtube_url
-
-      system "youtube-dl --extract-audio --audio-format mp3 --audio-quality 0 -o '%(title)s.%(ext)s' #{youtube_url}"
+      system "youtube-dl --quiet --extract-audio --embed-thumbnail --audio-format mp3 --audio-quality 0 --metadata-from-title '%(artist)s - %(title)s' -o '%(title)s.%(ext)s' #{youtube_url}"
+      getting.stop('(successful)')
     end
 
-    # puts release
+    puts "done:"
   rescue Exception => e
     puts "#{e}!"
   end

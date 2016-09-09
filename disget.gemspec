@@ -35,4 +35,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "activesupport", "~> 5.0"
   spec.add_runtime_dependency "nokogiri", "~> 1.6"
   spec.add_runtime_dependency "httparty", "~> 0.14"
+  spec.add_runtime_dependency "tty"
+  spec.add_runtime_dependency "tty-spinner"
 end
