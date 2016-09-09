@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Download mp3's from a discog release id.}
   spec.description   = %q{Download mp3's from a discog release id.}
-  spec.homepage      = "http://dainelvera.com"
+  spec.homepage      = "https://github.com/arubinofaux/discog-get"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
