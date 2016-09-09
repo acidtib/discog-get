@@ -6,7 +6,6 @@ require "discogs-wrapper"
 discog = Discogs::Wrapper.new("disget")
 
 disget = Disget::Robot.new
-# puts disget.say_hello
 
 options = {}
 option_parser = OptionParser.new do |opts|
@@ -20,7 +19,7 @@ end
 option_parser.parse!
 
 if options[:version]
-  puts "Version: #{Disget::Version}"
+  puts "Version: #{Disget::VERSION}"
   puts " "
 end
 
