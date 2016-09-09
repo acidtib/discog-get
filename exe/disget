@@ -1,0 +1,53 @@
+#!/usr/bin/env ruby
+require 'optparse'
+require 'disget'
+require "discogs-wrapper"
+
+discog = Discogs::Wrapper.new("disget")
+
+disget = Disget::Robot.new
+# puts disget.say_hello
+
+options = {}
+option_parser = OptionParser.new do |opts|
+  opts.banner = "Usage: disget [options] RELEASE-ID"
+
+  opts.on("-v", "--version", "print discog-get version") do |v|
+    options[:version] = v
+  end
+end
+
+option_parser.parse!
+
+if options[:version]
+  puts "Version: #{Disget::Version}"
+  puts " "
+end
+
+if ARGV.size < 1
+  puts option_parser.help
+else
+  release_id = ARGV[0]
+
+  begin
+    release = discog.get_release(release_id)
+    artist = release[:artists].first[:name]
+    release_name = release[:title]
+
+    puts artist
+    puts release_name
+
+    release[:tracklist].each do |track|
+      puts "#{artist} - #{track[:title]}"
+
+      youtube_url = disget.search("#{artist} - #{track[:title]}")
+      puts youtube_url
+
+      system "youtube-dl --extract-audio --audio-format mp3 --audio-quality 0 -o '%(title)s.%(ext)s' #{youtube_url}"
+    end
+
+    # puts release
+  rescue Exception => e
+    puts "#{e}!"
+  end
+end

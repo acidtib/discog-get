@@ -1,0 +1,2 @@
+gem build disget.gemspec
+gem install discog-get-0.1.0.gem
